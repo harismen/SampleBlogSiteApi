@@ -13,6 +13,6 @@ namespace SampleBlogDatabaseLayer.Interfaces
         Task<List<Post>> GetAllPosts();
 
         // Category Operations
-        Task InsertCategory(Category category);
+        Task<int> InsertCategory(Category category);
     }
 }

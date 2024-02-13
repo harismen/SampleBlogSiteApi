@@ -26,13 +26,25 @@ namespace SampleBlogDatabaseLayer.Repository
             return await _context.Posts.ToListAsync();
         }
 
-        public async Task InsertCategory(Category category)
+        public async Task<int> InsertCategory(Category category)
         {
-            //SqlParameter nameParam = new SqlParameter("@Name", category.Name);
-            //SqlParameter posttIdParam = new SqlParameter("@DepartmentId", @PostId);
-            //@Name, @PostId, @CreatedByUserId, @CreatedDate, @LastModifiedUserId, @LastModifiedDate, @IsActive, @IsDeleted
+            try
+            {
+                SqlParameter nameParam = new SqlParameter("@Name", category.Name);
+                SqlParameter createdDateParam = new SqlParameter("@CreatedDate", DateTime.Now);
+                SqlParameter isActiveParam = new SqlParameter("@IsActive", category.IsActive);
+                SqlParameter isDeletedParam = new SqlParameter("@IsDeleted", category.IsDeleted);
 
-            //await _context.Database.ExecuteSqlRaw("EXEC InsertEmployee @Name, @DepartmentId", nameParam, departmentIdParam);
+                var result = await _context.Database.ExecuteSqlRawAsync("EXEC InsertCategory @Name, @CreatedDate, @IsActive, @IsDeleted",
+                                nameParam, createdDateParam, isActiveParam, isDeletedParam);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
         }
     }
 }

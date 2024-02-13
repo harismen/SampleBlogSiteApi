@@ -15,8 +15,10 @@ namespace SampleBlogSiteApi.Controllers
         {
             _blogService = blogService;
         }
-
+        // GET: api/Blog/allposts
         [HttpGet("allposts")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<Post>>> GetAllPosts()
         {
             //  The return type of Task<ActionResult> allows us to return status code 200 OK along with the list of invoices
@@ -29,6 +31,23 @@ namespace SampleBlogSiteApi.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Error retrieving data from the database: {ex.StackTrace} ");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        // POST: api/Blog/categories
+        [HttpPost("categories")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> Post([FromBody] Category category)
+        {
+            try
+            {
+                return Ok(await _blogService.InsertCategory(category));
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error retrieving data from the database");
             }

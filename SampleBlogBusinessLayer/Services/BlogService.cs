@@ -24,5 +24,10 @@ namespace SampleBlogBusinessLayer.Services
         {
             return _blogRepository.GetAllPosts();
         }
+
+        public Task<int> InsertCategory(Category category)
+        {
+            return _blogRepository.InsertCategory(category);
+        }
     }
 }
