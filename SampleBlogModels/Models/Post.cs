@@ -25,7 +25,7 @@ namespace SampleBlogModels.Models
         public string Content { get; set; }
 
         // Navigation properties
-        public List<Category> Categories { get; set; }
-        public List<Comment> Comments { get; set; }
+        public List<Category> Categories { get; set; } = new List<Category>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

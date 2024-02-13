@@ -4,6 +4,7 @@ using SampleBlogModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,18 +43,23 @@ namespace SampleBlogDatabaseCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Post>()
+                .HasMany(e => e.Categories)
+                .WithOne()
+                .IsRequired(false);
 
             // Initial MockData
+            modelBuilder.Entity<Post>()
+                .HasData(
+                    new { Id = 1, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Title = "Sample Post 1", Summary = "Mock created Post - 1", Content = "Automatically Created Post for Visualization Purposes"},
+                    new { Id = 2, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Title = "Sample Post 2", Summary = "Mock created Post - 2", Content = "Automatically Created Post for Visualization Purposes" },
+                    new { Id = 3, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Title = "Sample Post 3", Summary = "Mock created Post - 3", Content = "Automatically Created Post for Visualization Purposes" }
+                );
 
-            modelBuilder.Entity<Post>().HasData(
-                new { Id = 1, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Title = "Sample Post 1", Summary = "Mock created Post - 1", Content = "Automatically Created Post for Visualization Purposes"},
-                new { Id = 2, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Title = "Sample Post 2", Summary = "Mock created Post - 2", Content = "Automatically Created Post for Visualization Purposes" },
-                new { Id = 3, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Title = "Sample Post 3", Summary = "Mock created Post - 3", Content = "Automatically Created Post for Visualization Purposes" }
-            );
-
-            modelBuilder.Entity<Category>().HasData(
-                new { Id = 1, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Name = "MOCKED" }
-            );
+            modelBuilder.Entity<Category>()
+                .HasData(
+                    new { Id = 1, CreatedDate = new DateTime(2024, 01, 01), IsActive = true, IsDeleted = false, Name = "MOCKED" }
+                );
 
         }
     }

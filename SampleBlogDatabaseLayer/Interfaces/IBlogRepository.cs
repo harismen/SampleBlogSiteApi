@@ -11,5 +11,8 @@ namespace SampleBlogDatabaseLayer.Interfaces
     {
         // Post Operations
         Task<List<Post>> GetAllPosts();
+
+        // Category Operations
+        Task InsertCategory(Category category);
     }
 }

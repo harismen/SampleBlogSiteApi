@@ -12,8 +12,8 @@ using SampleBlogDatabaseCore;
 namespace SampleBlogDatabaseCore.Migrations
 {
     [DbContext(typeof(SampleBlogDbContext))]
-    [Migration("20240213151559_Initial")]
-    partial class Initial
+    [Migration("20240213174410_InsertCategorySP")]
+    partial class InsertCategorySP
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
