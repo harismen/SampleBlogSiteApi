@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SampleBlogBusinessLayer.Interfaces;
+using SampleBlogModels.BaseModels;
 using SampleBlogModels.Models;
+using Serilog;
 
 namespace SampleBlogSiteApi.Controllers
 {
@@ -28,9 +30,13 @@ namespace SampleBlogSiteApi.Controllers
                 // Use our created Method from repository and return a 200 Ok status code
                 return Ok(await _blogService.GetAllPosts());
             }
+            catch (CustomErrorException ex)
+            {
+                return BadRequest(ex.Message); // Return custom error message to the client
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving data from the database: {ex.StackTrace} ");
+                Log.Error($"Error retrieving data from the database: {ex.StackTrace} ");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error retrieving data from the database");
             }
@@ -46,10 +52,15 @@ namespace SampleBlogSiteApi.Controllers
             {
                 return Ok(await _blogService.InsertCategory(category));
             }
+            catch (CustomErrorException ex)
+            {
+                return BadRequest(ex.Message); // Return custom error message to the client
+            }
             catch (Exception ex)
             {
+                Log.Error($"Error inserting data from the database: {ex.StackTrace} ");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error retrieving data from the database");
+                    "Error inserting data from the database");
             }
         }
     }

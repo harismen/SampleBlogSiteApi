@@ -3,6 +3,7 @@ using SampleBlogBusinessLayer.Interfaces;
 using SampleBlogDatabaseCore;
 using SampleBlogDatabaseLayer.Interfaces;
 using SampleBlogDatabaseLayer.Repository;
+using SampleBlogModels.BaseModels;
 using SampleBlogModels.Models;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,21 @@ namespace SampleBlogBusinessLayer.Services
 
         public Task<int> InsertCategory(Category category)
         {
-            return _blogRepository.InsertCategory(category);
+            try
+            {
+                // Custom error Exception for validation purposes
+                if (category.Name.Contains("@"))
+                {
+                    throw new CustomErrorException($"Name Cannot contain the @ character");
+                }
+
+                return _blogRepository.InsertCategory(category);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }
